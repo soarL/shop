@@ -53,7 +53,7 @@ return	array(
 				array('name' => '概览','child' => array(
 						array('name'=>'系统后台','act'=>'welcome','op'=>'Index'),
 				)),
-								array('name' => '商品','child' => array(
+				array('name' => '商品','child' => array(
 					array('name' => '商品分类', 'act'=>'categoryList', 'op'=>'Goods'),
 					array('name' => '商品列表', 'act'=>'goodsList', 'op'=>'Goods'),
 					array('name' => '库存日志', 'act'=>'stock_list', 'op'=>'Goods'),
