@@ -49,7 +49,7 @@ class Cx extends Taglib
         'for'        => ['attr' => 'start,end,name,comparison,step'],
         'url'        => ['attr' => 'link,vars,suffix,domain', 'close' => 0, 'expression' => true],
         'function'   => ['attr' => 'name,vars,use,call'],
-        'ZTfx'     => ['attr'=>'sql,key,item,result_name','close'=>1,'level'=>3], // ZTfx sql 万能标签
+        'tpshop'     => ['attr'=>'sql,key,item,result_name','close'=>1,'level'=>3], // ZTfx sql 万能标签
         'adv'        => ['attr'=>'limit,order,where,item','close'=>1],        
     ];
 

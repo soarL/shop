@@ -1,6 +1,9 @@
 <?php
 return	array(	
 	'index'=>array('name'=>'系统','child'=>array(
+				array('name' => '概览','child' => array(
+						array('name'=>'系统后台','act'=>'welcome','op'=>'Index'),
+				)),
 				// array('name' => '设置','child' => array(
 				// 		array('name'=>'商城设置','act'=>'index','op'=>'System'),
 				// 		//array('name'=>'支付方式','act'=>'index1','op'=>'System'),
@@ -18,7 +21,7 @@ return	array(
 						array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
 						array('name'=>'充值记录','act'=>'recharge','op'=>'User'),
 						array('name'=>'提现申请','act'=>'withdrawals','op'=>'User'),
-						array('name'=>'汇款记录','act'=>'remittance','op'=>'User'),
+						// array('name'=>'汇款记录','act'=>'remittance','op'=>'User'),
 						//array('name'=>'会员整合','act'=>'integrate','op'=>'User'),
 				)),
 				// array('name' => '广告','child' => array(
@@ -37,21 +40,18 @@ return	array(
 						array('name' => '管理员列表', 'act'=>'index', 'op'=>'Admin'),
 						array('name' => '角色管理', 'act'=>'role', 'op'=>'Admin'),
 						array('name'=>'权限资源列表','act'=>'right_list','op'=>'System'),
-						array('name' => '管理员日志', 'act'=>'log', 'op'=>'Admin'),
+						array('name' => '登录日志', 'act'=>'log', 'op'=>'Admin'),
 						// array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
 				)),
 			
-				array('name' => '模板','child'=>array(
-						array('name' => '模板设置', 'act'=>'templateList', 'op'=>'Template'),
-				)),
+				// array('name' => '模板','child'=>array(
+				// 		array('name' => '模板设置', 'act'=>'templateList', 'op'=>'Template'),
+				// )),
 				array('name' => '数据','child'=>array(
 						array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
 						array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
 						//array('name' => '数据恢复', 'act'=>'log', 'op'=>'Admin'),
 						//array('name' => 'SQL查询', 'act'=>'log', 'op'=>'Admin'),
-				)),
-				array('name' => '概览','child' => array(
-						array('name'=>'系统后台','act'=>'welcome','op'=>'Index'),
 				)),
 				array('name' => '商品','child' => array(
 					array('name' => '商品分类', 'act'=>'categoryList', 'op'=>'Goods'),
