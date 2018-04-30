@@ -24,11 +24,10 @@ class Plugin extends Base {
     {
         parent::_initialize();
         //  更新插件
-        $this->insertPlugin($this->scanPlugin());
+        //$this->insertPlugin($this->scanPlugin());
     }
 
     public function index(){
-
         $plugin_list = M('plugin')->select();
         $plugin_list = group_same_key($plugin_list,'type');
         $this->assign('payment',$plugin_list['payment']);

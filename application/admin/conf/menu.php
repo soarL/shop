@@ -1,18 +1,18 @@
 <?php
 return	array(	
 	'index'=>array('name'=>'系统','child'=>array(
-				array('name' => '设置','child' => array(
-						array('name'=>'商城设置','act'=>'index','op'=>'System'),
-						//array('name'=>'支付方式','act'=>'index1','op'=>'System'),
-						array('name'=>'地区&配送','act'=>'region','op'=>'Tools'),
-						array('name'=>'短信模板','act'=>'index','op'=>'SmsTemplate'),
-						//array('name'=>'接口对接','act'=>'index3','op'=>'System'),
-						//array('name'=>'验证码设置','act'=>'index4','op'=>'System'),
-						array('name'=>'自定义导航栏','act'=>'navigationList','op'=>'System'),
-						array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
-						array('name'=>'清除缓存','act'=>'cleanCache','op'=>'System'),
-						array('name'=>'自提点','act'=>'index','op'=>'Pickup'),
-				)),
+				// array('name' => '设置','child' => array(
+				// 		array('name'=>'商城设置','act'=>'index','op'=>'System'),
+				// 		//array('name'=>'支付方式','act'=>'index1','op'=>'System'),
+				// 		array('name'=>'地区&配送','act'=>'region','op'=>'Tools'),
+				// 		array('name'=>'短信模板','act'=>'index','op'=>'SmsTemplate'),
+				// 		//array('name'=>'接口对接','act'=>'index3','op'=>'System'),
+				// 		//array('name'=>'验证码设置','act'=>'index4','op'=>'System'),
+				// 		array('name'=>'自定义导航栏','act'=>'navigationList','op'=>'System'),
+				// 		array('name'=>'友情链接','act'=>'linkList','op'=>'Article'),
+				// 		array('name'=>'清除缓存','act'=>'cleanCache','op'=>'System'),
+				// 		array('name'=>'自提点','act'=>'index','op'=>'Pickup'),
+				// )),
 				array('name' => '会员','child'=>array(
 						array('name'=>'会员列表','act'=>'index','op'=>'User'),
 						array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
@@ -38,7 +38,7 @@ return	array(
 						array('name' => '角色管理', 'act'=>'role', 'op'=>'Admin'),
 						array('name'=>'权限资源列表','act'=>'right_list','op'=>'System'),
 						array('name' => '管理员日志', 'act'=>'log', 'op'=>'Admin'),
-						array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
+						// array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
 				)),
 			
 				array('name' => '模板','child'=>array(

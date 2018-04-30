@@ -257,7 +257,7 @@
                 </dt>
                 <dd class="opt">
                     <select name="date" id="distribut_date">
-                        <?php $__FOR_START_29802__=1;$__FOR_END_29802__=31;for($i=$__FOR_START_29802__;$i < $__FOR_END_29802__;$i+=1){ ?>
+                        <?php $__FOR_START_11196__=1;$__FOR_END_11196__=31;for($i=$__FOR_START_11196__;$i < $__FOR_END_11196__;$i+=1){ ?>
                             <option value="<?php echo $i; ?>" <?php if($config[date] == $i): ?>selected="selected"<?php endif; ?>><?php echo $i; ?>天</option>
                         <?php } ?>
                     </select>

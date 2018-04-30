@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:51:"./application/admin/view2/public\dispatch_jump.html";i:1525060627;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:51:"./application/admin/view2/public\dispatch_jump.html";i:1525087321;}*/ ?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -67,7 +67,7 @@ em{font-style: normal;}
 			</div>
 			<div class="recigle">
 				<p>Copyright©2014-2017<em class="copyright"><a class="copyright" href="http://www.ZTfx.cn/">ZTfx v2.0.0</a></em></p>
-				<p><em class="copyright"><a class="copyright" href="http://www.ZTfx.cn/">深圳搜豹网络有限公司</a></em>出品</p>
+				<p><em class="copyright"><a class="copyright" href="http://www.ZTfx.cn/"> </a></em>出品</p>
 			</div>
 		</div>
 		<script type="text/javascript">
