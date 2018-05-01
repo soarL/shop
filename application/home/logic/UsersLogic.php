@@ -35,7 +35,7 @@ class UsersLogic extends Model
     	$result = array();
         if(!$username || !$password)
            $result= array('status'=>0,'msg'=>'请填写账号或密码');
-        $user = M('users')->where("mobile",$username)->whereOr('email',$username)->find();
+        $user = M('admin')->where("mobile",$username)->whereOr('email',$username)->find();
         if(!$user){
            $result = array('status'=>-1,'msg'=>'账号不存在!');
         }elseif(encrypt($password) != $user['password']){
@@ -61,7 +61,7 @@ class UsersLogic extends Model
     	$result = array();
         if(!$username || !$password)
            $result= array('status'=>0,'msg'=>'请填写账号或密码');
-        $user = M('users')->where("mobile|email","=",$username)->find();
+        $user = M('admin')->where("mobile|email","=",$username)->find();
         if(!$user){
            $result = array('status'=>-1,'msg'=>'账号不存在!');
         }elseif($password != $user['password']){
@@ -74,7 +74,7 @@ class UsersLogic extends Model
             $levelName = M("user_level")->where("level_id", $levelId)->getField("level_name");
             $user['level_name'] = $levelName;            
             $user['token'] = md5(time().mt_rand(1,999999999));
-            M('users')->where("user_id", $user['user_id'])->save(array('token'=>$user['token'],'last_login'=>time(), 'push_id' => $push_id));
+            M('admin')->where("user_id", $user['user_id'])->save(array('token'=>$user['token'],'last_login'=>time(), 'push_id' => $push_id));
             $result = array('status'=>1,'msg'=>'登陆成功','result'=>$user);
         }
         return $result;
@@ -89,12 +89,12 @@ class UsersLogic extends Model
             ajaxReturn(['status'=>-100, 'msg'=>'已经退出账户']);
         }
 
-        $user = M('users')->where("token", $token)->find();
+        $user = M('admin')->where("token", $token)->find();
         if (empty($user)) {
             ajaxReturn(['status'=>-101, 'msg'=>'用户不在登录状态']);
         }
 
-        M('users')->where(["user_id" => $user['user_id']])->save(['last_login' => 0, 'token' => '']);
+        M('admin')->where(["user_id" => $user['user_id']])->save(['last_login' => 0, 'token' => '']);
         session(null);
 
         return ['status'=>1, 'msg'=>'退出账户成功'];;
@@ -104,10 +104,10 @@ class UsersLogic extends Model
     public function oauth_bind($data = array()){
     	$user = session('user');
     	if(empty($user['openid'])){
-    		if(M('users')->where(array('openid'=>$data['openid']))->count()>0){
+    		if(M('admin')->where(array('openid'=>$data['openid']))->count()>0){
     			return array('status'=>-1,'msg'=>'您的'.$data['oauth'].'账号已经绑定过账号');
     		}else{
-    			 M('users')->where(array('user_id'=>$user['user_id']))->save($data);
+    			 M('admin')->where(array('user_id'=>$user['user_id']))->save($data);
     			 return array('status'=>1,'msg'=>'绑定成功','result'=>$data);
     		}
     	}else{
@@ -145,13 +145,13 @@ class UsersLogic extends Model
             // 如果找到他老爸还要找他爷爷他祖父等
             if($map['first_leader'])
             {
-                $first_leader = M('users')->where("user_id", $map['first_leader'])->find();
+                $first_leader = M('admin')->where("user_id", $map['first_leader'])->find();
                 $map['second_leader'] = $first_leader['first_leader']; //  第一级推荐人
                 $map['third_leader'] = $first_leader['second_leader']; // 第二级推荐人
                 //他上线分销的下线人数要加1
-                M('users')->where(array('user_id' => $map['first_leader']))->setInc('underling_number');
-                M('users')->where(array('user_id' => $map['second_leader']))->setInc('underling_number');
-                M('users')->where(array('user_id' => $map['third_leader']))->setInc('underling_number');
+                M('admin')->where(array('user_id' => $map['first_leader']))->setInc('underling_number');
+                M('admin')->where(array('user_id' => $map['second_leader']))->setInc('underling_number');
+                M('admin')->where(array('user_id' => $map['third_leader']))->setInc('underling_number');
             }else
 			{
 				$map['first_leader'] = 0;
@@ -162,7 +162,7 @@ class UsersLogic extends Model
             if($distribut_condition == 0)  // 直接成为分销商, 每个人都可以做分销        
                 $map['is_distribut']  = 1;
                         
-            $row_id = M('users')->insertGetId($map);
+            $row_id = M('admin')->insertGetId($map);
 //			// 会员注册送优惠券
 //			$coupon = M('coupon')->where("send_end_time > ".time()." and ((createnum - send_num) > 0 or createnum = 0) and type = 2")->select();
 //			foreach ($coupon as $key => $val)
@@ -171,11 +171,11 @@ class UsersLogic extends Model
 //				M('coupon_list')->add(array('cid'=>$val['id'],'type'=>$val['type'],'uid'=>$row_id,'send_time'=>time()));
 //				M('Coupon')->where("id", $val['id'])->setInc('send_num'); // 优惠券领取数量加一
 //			}
-            $user = M('users')->where("user_id", $row_id)->find();
+            $user = M('admin')->where("user_id", $row_id)->find();
 			
         }else{
             $user['token'] = md5(time().mt_rand(1,999999999));
-            M('users')->where("user_id", $user['user_id'])->save(array('token'=>$user['token'],'last_login'=>time(),'push_id'=>$map['push_id']));
+            M('admin')->where("user_id", $user['user_id'])->save(array('token'=>$user['token'],'last_login'=>time(),'push_id'=>$map['push_id']));
         }
         return array('status'=>1,'msg'=>'登陆成功','result'=>$user);
     }
@@ -220,13 +220,13 @@ class UsersLogic extends Model
         // 如果找到他老爸还要找他爷爷他祖父等
         if($map['first_leader'])
         {
-            $first_leader = M('users')->where("user_id", $map['first_leader'])->find();
+            $first_leader = M('admin')->where("user_id", $map['first_leader'])->find();
             $map['second_leader'] = $first_leader['first_leader'];
             $map['third_leader'] = $first_leader['second_leader'];
             //他上线分销的下线人数要加1
-            M('users')->where(array('user_id' => $map['first_leader']))->setInc('underling_number');
-            M('users')->where(array('user_id' => $map['second_leader']))->setInc('underling_number');
-            M('users')->where(array('user_id' => $map['third_leader']))->setInc('underling_number');
+            M('admin')->where(array('user_id' => $map['first_leader']))->setInc('underling_number');
+            M('admin')->where(array('user_id' => $map['second_leader']))->setInc('underling_number');
+            M('admin')->where(array('user_id' => $map['third_leader']))->setInc('underling_number');
         }else
 		{
 			$map['first_leader'] = 0;
@@ -240,7 +240,7 @@ class UsersLogic extends Model
         $map['push_id'] = $push_id; //推送id
         //$map['token'] = md5(time().mt_rand(1,99999));
         
-        $user_id = M('users')->insertGetId($map);
+        $user_id = M('admin')->insertGetId($map);
         if($user_id === false)
             return array('status'=>-1,'msg'=>'注册失败');
         
@@ -248,7 +248,7 @@ class UsersLogic extends Model
         if($pay_points > 0){
             accountLog($user_id, 0,$pay_points, '会员注册赠送积分'); // 记录日志流水
         }
-        $user = M('users')->where("user_id", $user_id)->find();
+        $user = M('admin')->where("user_id", $user_id)->find();
         return array('status'=>1,'msg'=>'注册成功','result'=>$user);
     }
 
@@ -261,7 +261,7 @@ class UsersLogic extends Model
             return array('status'=>-1, 'msg'=>'缺少参数');
         }
 
-        $user = M('users')->where('user_id', $user_id)->find();
+        $user = M('admin')->where('user_id', $user_id)->find();
         if (!$user) {
             return false;
         }
@@ -293,7 +293,7 @@ class UsersLogic extends Model
             return array('status'=>-1, 'msg'=>'缺少参数');
         }
 
-        $user = M('users')->where('user_id', $user_id)->find();
+        $user = M('admin')->where('user_id', $user_id)->find();
         if (!$user) {
             return false;
         }
@@ -577,13 +577,13 @@ class UsersLogic extends Model
         $condition['user_id'] = array('neq',$user_id);
         $condition[$field] = $email_mobile;
 
-        $is_exist = M('users')->where($condition)->find();
+        $is_exist = M('admin')->where($condition)->find();
         if($is_exist)
             return false;
         unset($condition[$field]);
         $condition['user_id'] = $user_id;
         $validate = $field.'_validated';
-        M('users')->where($condition)->save(array($field=>$email_mobile,$validate=>1));
+        M('admin')->where($condition)->save(array($field=>$email_mobile,$validate=>1));
         return true;
     }
 
@@ -594,7 +594,7 @@ class UsersLogic extends Model
      * @return bool
      */
     public function update_info($user_id,$post=array()){
-        $model = M('users')->where("user_id", $user_id);
+        $model = M('admin')->where("user_id", $user_id);
         $row = $model->setField($post);
         if($row === false)
            return false;
@@ -710,7 +710,7 @@ class UsersLogic extends Model
      * @param $confirm_password 确认新 密码
      */
     public function password($user_id,$old_password,$new_password,$confirm_password,$is_update=true){
-        $user = M('users')->where('user_id', $user_id)->find();
+        $user = M('admin')->where('user_id', $user_id)->find();
         if(strlen($new_password) < 6)
             return array('status'=>-1,'msg'=>'密码不能低于6位字符','result'=>'');
         if($new_password != $confirm_password)
@@ -718,7 +718,7 @@ class UsersLogic extends Model
         //验证原密码
         if($is_update && ($user['password'] != '' && encrypt($old_password) != $user['password']))
             return array('status'=>-1,'msg'=>'密码验证失败','result'=>'');
-        $row = M('users')->where("user_id", $user_id)->save(array('password'=>encrypt($new_password)));
+        $row = M('admin')->where("user_id", $user_id)->save(array('password'=>encrypt($new_password)));
         if(!$row)
             return array('status'=>-1,'msg'=>'修改失败','result'=>'');
         return array('status'=>1,'msg'=>'修改成功','result'=>'');
@@ -732,7 +732,7 @@ class UsersLogic extends Model
      * @param $confirm_password 确认新 密码
      */
     public function passwordForApp($user_id,$old_password,$new_password,$is_update=true){
-        $user = M('users')->where('user_id', $user_id)->find();
+        $user = M('admin')->where('user_id', $user_id)->find();
         if(strlen($new_password) < 6){
             return array('status'=>-1,'msg'=>'密码不能低于6位字符','result'=>'');
         }
@@ -741,7 +741,7 @@ class UsersLogic extends Model
             return array('status'=>-1,'msg'=>'旧密码错误','result'=>'');
         }
 
-        $row = M('users')->where("user_id='{$user_id}'")->update(array('password'=>$new_password));
+        $row = M('admin')->where("user_id='{$user_id}'")->update(array('password'=>$new_password));
         if(!$row){
             return array('status'=>-1,'msg'=>'密码修改失败','result'=>'');
         }
@@ -759,7 +759,7 @@ class UsersLogic extends Model
             return array('status'=>-1,'msg'=>'密码不能低于6位字符','result'=>'');
         if($new_password != $confirm_password)
             return array('status'=>-1,'msg'=>'两次密码输入不一致','result'=>'');
-        $row = M('users')->where("user_id",$user_id)->update(array('paypwd'=>encrypt($new_password)));
+        $row = M('admin')->where("user_id",$user_id)->update(array('paypwd'=>encrypt($new_password)));
         if(!$row){
             return array('status'=>-1,'msg'=>'修改失败','result'=>'');
         }

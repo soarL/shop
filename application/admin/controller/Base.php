@@ -48,7 +48,7 @@ class Base extends Controller {
         if(in_array(ACTION_NAME,array('login','logout','vertify')) || in_array(CONTROLLER_NAME,array('Ueditor','Uploadify'))){
         	//return;
         }else{
-        	if(session('admin_id') > 0 ){
+        	if(session('user_id') > 0 ){
         		$this->check_priv();//检查管理员菜单操作权限
         	}else{
         		$this->error('请先登陆',U('Admin/Admin/login'),1);

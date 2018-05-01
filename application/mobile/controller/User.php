@@ -35,7 +35,7 @@ class User extends MobileBase
         parent::_initialize();
         if (session('?user')) {
             $user = session('user');
-            $user = M('users')->where("user_id", $user['user_id'])->find();
+            $user = M('admin')->where("user_id", $user['user_id'])->find();
             session('user', $user);  //覆盖session 中的 user
             $this->user = $user;
             $this->user_id = $user['user_id'];
@@ -610,11 +610,11 @@ class User extends MobileBase
             $scene = I('post.scene', 6);
 
             if (!empty($email)) {
-                $c = M('users')->where(['email' => input('post.email'), 'user_id' => ['<>', $this->user_id]])->count();
+                $c = M('admin')->where(['email' => input('post.email'), 'user_id' => ['<>', $this->user_id]])->count();
                 $c && $this->error("邮箱已被使用");
             }
             if (!empty($mobile)) {
-                $c = M('users')->where(['mobile' => input('post.mobile'), 'user_id' => ['<>', $this->user_id]])->count();
+                $c = M('admin')->where(['mobile' => input('post.mobile'), 'user_id' => ['<>', $this->user_id]])->count();
                 $c && $this->error("手机已被使用");
                 if (!$code)
                     $this->error('请输入验证码');
@@ -837,7 +837,7 @@ class User extends MobileBase
     public function password()
     {
         //检查是否第三方登录用户
-        $user = M('users')->where('user_id', $this->user_id)->find();
+        $user = M('admin')->where('user_id', $this->user_id)->find();
         if ($user['mobile'] == '' && $user['email'] == '') {
             $this->error('请先绑定手机或邮箱', U('/Mobile/User/index'));
         }
@@ -867,7 +867,7 @@ class User extends MobileBase
                 if (check_email($username)) {
                     $field = 'email';
                 }
-                $user = M('users')->where("email", $username)->whereOr('mobile', $username)->find();
+                $user = M('admin')->where("email", $username)->whereOr('mobile', $username)->find();
                 if ($user) {
                     session('find_password', array('user_id' => $user['user_id'], 'username' => $username,
                         'email' => $user['email'], 'mobile' => $user['mobile'], 'type' => $field));
@@ -915,8 +915,8 @@ class User extends MobileBase
             }
             if ($check['is_check'] == 1) {
                 //$user = get_user_info($check['sender'],1);
-                $user = M('users')->where("mobile", $check['sender'])->whereOr('email', $check['sender'])->find();
-                M('users')->where("user_id", $user['user_id'])->save(array('password' => encrypt($password)));
+                $user = M('admin')->where("mobile", $check['sender'])->whereOr('email', $check['sender'])->find();
+                M('admin')->where("user_id", $user['user_id'])->save(array('password' => encrypt($password)));
                 session('validate_code', null);
                 //header("Location:".U('User/set_pwd',array('is_set'=>1)));
                 $this->success('新密码已设置行牢记新密码', U('User/index'));

@@ -124,7 +124,7 @@ class Coupon extends Base {
     	if(!empty($nickname)){
     		$condition['nickname'] = array('like',"%$nickname%");
     	}
-    	$model = M('users');
+    	$model = M('admin');
     	$count = $model->where($condition)->count();
     	$Page  = new AjaxPage($count,10);
     	/*foreach($condition as $key=>$val) {
@@ -154,9 +154,9 @@ class Coupon extends Base {
     		}
     		if(empty($user_id) && $level_id>=0){
     			if($level_id==0){
-    				$user = M('users')->where("is_lock",0)->select();
+    				$user = M('admin')->where("is_lock",0)->select();
     			}else{
-    				$user = M('users')->where("is_lock",0)->where('level', $level_id)->select();
+    				$user = M('admin')->where("is_lock",0)->where('level', $level_id)->select();
     			}
     			if($user){
     				$able = count($user);//本次发送量
@@ -227,7 +227,7 @@ class Coupon extends Base {
         $sql = "SELECT count(1) as c FROM __PREFIX__coupon_list  l ".
                 "LEFT JOIN __PREFIX__coupon c ON c.id = l.cid ". //联合优惠券表查询名称
                 "LEFT JOIN __PREFIX__order o ON o.order_id = l.order_id ".     //联合订单表查询订单编号
-                "LEFT JOIN __PREFIX__users u ON u.user_id = l.uid WHERE l.cid = :cid";    //联合用户表去查询用户名
+                "LEFT JOIN __PREFIX__admin u ON u.user_id = l.uid WHERE l.cid = :cid";    //联合用户表去查询用户名
         
         $count = DB::query($sql,['cid' => $cid]);
         $count = $count[0]['c'];
@@ -238,7 +238,7 @@ class Coupon extends Base {
         $sql = "SELECT l.*,c.name,o.order_sn,u.nickname FROM __PREFIX__coupon_list  l ".
                 "LEFT JOIN __PREFIX__coupon c ON c.id = l.cid ". //联合优惠券表查询名称
                 "LEFT JOIN __PREFIX__order o ON o.order_id = l.order_id ".     //联合订单表查询订单编号
-                "LEFT JOIN __PREFIX__users u ON u.user_id = l.uid WHERE l.cid = :cid".    //联合用户表去查询用户名
+                "LEFT JOIN __PREFIX__admin u ON u.user_id = l.uid WHERE l.cid = :cid".    //联合用户表去查询用户名
                 " limit {$Page->firstRow} , {$Page->listRows}";
         $coupon_list = DB::query($sql,['cid' => $cid]);
         $this->assign('coupon_type',C('COUPON_TYPE'));

@@ -455,7 +455,7 @@ class Goods extends Base {
         //我能兑换
         $user_id = cookie('user_id');
         if ($exchange == 1 && !empty($user_id)) {
-            $user_pay_points = intval(M('users')->where(array('user_id' => $user_id))->getField('pay_points'));
+            $user_pay_points = intval(M('admin')->where(array('user_id' => $user_id))->getField('pay_points'));
             if ($user_pay_points !== false) {
                 array_push($exchange_integral_where_array, array('lt', $user_pay_points));
             }

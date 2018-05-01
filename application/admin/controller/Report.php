@@ -96,7 +96,7 @@ class Report extends Base{
 		if($email){
 			$where = "and b.email='$email'";
 		}
-		$sql = "select count(a.order_id) as order_num,sum(a.order_amount) as amount,a.user_id,b.mobile,b.email,b.nickname from __PREFIX__order as a left join __PREFIX__users as b ";
+		$sql = "select count(a.order_id) as order_num,sum(a.order_amount) as amount,a.user_id,b.mobile,b.email,b.nickname from __PREFIX__order as a left join __PREFIX__admin as b ";
 		$sql .= " on a.user_id = b.user_id where a.add_time>$this->begin and a.add_time<$this->end and a.pay_status=1 $where group by user_id order by amount DESC limit 0,100";
 		$res = DB::cache(true)->query($sql);
 		$this->assign('list',$res);
@@ -147,14 +147,14 @@ class Report extends Base{
 	public function user(){
 		$today = strtotime(date('Y-m-d'));
 		$month = strtotime(date('Y-m-01'));
-		$user['today'] = D('users')->where("reg_time>$today")->count();//今日新增会员
-		$user['month'] = D('users')->where("reg_time>$month")->count();//本月新增会员
-		$user['total'] = D('users')->count();//会员总数
-		$user['user_money'] = D('users')->sum('user_money');//会员余额总额
+		$user['today'] = D('admin')->where("reg_time>$today")->count();//今日新增会员
+		$user['month'] = D('admin')->where("reg_time>$month")->count();//本月新增会员
+		$user['total'] = D('admin')->count();//会员总数
+		$user['user_money'] = D('admin')->sum('user_money');//会员余额总额
 		$res = M('order')->cache(true)->distinct(true)->field('user_id')->select();
 		$user['hasorder'] = count($res);
 		$this->assign('user',$user);
-		$sql = "SELECT COUNT(*) as num,FROM_UNIXTIME(reg_time,'%Y-%m-%d') as gap from __PREFIX__users where reg_time>$this->begin and reg_time<$this->end group by gap";
+		$sql = "SELECT COUNT(*) as num,FROM_UNIXTIME(reg_time,'%Y-%m-%d') as gap from __PREFIX__admin where reg_time>$this->begin and reg_time<$this->end group by gap";
 		$new = DB::query($sql);//新增会员趋势
 		foreach ($new as $val){
 			$arr[$val['gap']] = $val['num'];

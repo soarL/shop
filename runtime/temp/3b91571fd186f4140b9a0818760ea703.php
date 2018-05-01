@@ -156,7 +156,7 @@
         	<input type="text" size="30" id="timegap_end" name="timegap_end" value="<?php echo $timegap_end; ?>" class="qsbox"  placeholder="截止时间">
         </div>
         <div class="sDiv2">	 
-        	<select name="admin_id" >
+        	<select name="user_id" >
             	<option value="0">选择管理员</option>
 				<?php if(is_array($admin) || $admin instanceof \think\Collection || $admin instanceof \think\Paginator): if( count($admin)==0 ) : echo "" ;else: foreach($admin as $key=>$vv): ?>
                 <option value="<?php echo $key; ?>"><?php echo $vv; ?></option>

@@ -200,7 +200,7 @@ class Api extends Base {
     public function issetMobile()
     {
       $mobile = I("mobile",'0');  
-      $users = M('users')->where('mobile',$mobile)->find();
+      $users = M('admin')->where('mobile',$mobile)->find();
       if($users)
           exit ('1');
       else 
@@ -210,7 +210,7 @@ class Api extends Base {
     public function issetMobileOrEmail()
     {
         $mobile = I("mobile",'0');        
-        $users = M('users')->where("email",$mobile)->whereOr('mobile',$mobile)->find();
+        $users = M('admin')->where("email",$mobile)->whereOr('mobile',$mobile)->find();
         if($users)
             exit ('1');
         else

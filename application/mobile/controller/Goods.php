@@ -307,7 +307,7 @@ class Goods extends MobileBase {
         $user_id = cookie('user_id');
         if ($rank == 'exchange' && !empty($user_id)) {
             //获取用户积分
-            $user_pay_points = intval(M('users')->where(array('user_id' => $user_id))->getField('pay_points'));
+            $user_pay_points = intval(M('admin')->where(array('user_id' => $user_id))->getField('pay_points'));
             if ($user_pay_points !== false) {
                 array_push($exchange_integral_where_array, array('lt', $user_pay_points));
             }

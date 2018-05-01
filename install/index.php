@@ -312,8 +312,8 @@ switch ($step) {
             $ip = empty($ip) ? "0.0.0.0" : $ip;
             $password = md5('ZTfx'.trim($_POST['manager_pwd']));
 			mysqli_query($conn,"delete from `{$dbPrefix}admin` where user_name = 'admin'");
-			//mysql_query("INSERT INTO `{$dbPrefix}admin` (admin_id,user_name,email,password,add_time,last_ip,role_id) VALUES ('1','$username','$email','$password','$time','$ip','1')");
-			mysqli_query($conn," insert  into `{$dbPrefix}admin` (`admin_id`,`user_name`,`email`,`password`,`ec_salt`,`add_time`,`last_login`,`last_ip`,`nav_list`,`lang_type`,`agency_id`,`suppliers_id`,`todolist`,`role_id`) values ('1','$username','$email','$password',NULL,'$time',0,'$ip','','','0','0',NULL,'1')");
+			//mysql_query("INSERT INTO `{$dbPrefix}admin` (user_id,user_name,email,password,add_time,last_ip,role_id) VALUES ('1','$username','$email','$password','$time','$ip','1')");
+			mysqli_query($conn," insert  into `{$dbPrefix}admin` (`user_id`,`user_name`,`email`,`password`,`ec_salt`,`add_time`,`last_login`,`last_ip`,`nav_list`,`lang_type`,`agency_id`,`suppliers_id`,`todolist`,`role_id`) values ('1','$username','$email','$password',NULL,'$time',0,'$ip','','','0','0',NULL,'1')");
                     
             $message = '成功添加管理员<br />成功写入配置文件<br>安装完成．';
             $arr = array('n' => 999999, 'msg' => $message);

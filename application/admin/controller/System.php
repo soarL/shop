@@ -107,8 +107,6 @@ class System extends Base
             }
         }    
         $system_nav = array(
-            'http://www.ZTfx.cn' => 'ZTfx官网',
-            'http://www.99soubao.com' => '搜豹公司',
             '/index.php?m=Home&c=Activity&a=promoteList' => '促销',
             '/index.php?m=Home&c=Activity&a=flash_sale_list' => '抢购',
             '/index.php?m=Home&c=Activity&a=group_list' => '团购',

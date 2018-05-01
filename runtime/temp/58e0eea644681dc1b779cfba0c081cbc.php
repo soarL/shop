@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/user\add_user.html";i:1499420862;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:44:"./application/admin/view2/user\add_user.html";i:1525157261;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -130,17 +130,50 @@
         <div class="ncap-form-default">
             <dl class="row">
                 <dt class="tit">
-                    <label for="nickname"><em>*</em>会员昵称</label>
+                    <label for="first_leader"><em>*</em>推荐人</label>
                 </dt>
                 <dd class="opt">
-                    <input type="text" name="nickname" id="nickname" class="input-txt">
+                    <input type="text" name="first_leader" id="first_leader" class="input-txt">
                     <span class="err"></span>
                     <p class="notic"></p>
                 </dd>
             </dl>
             <dl class="row">
                 <dt class="tit">
-                    <label for="password"><em>*</em>登录密码</label>
+                    <label for="second_leader"><em>*</em>接点位置</label>
+                </dt>
+                <dd class="opt">
+                    <select name="second_leader">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                    </select>
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="oldname"><em>*</em>接点人</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="oldname" id="oldname" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="user_name"><em>*</em>用户名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="user_name" id="user_name" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="password"><em>*</em>密码</label>
                 </dt>
                 <dd class="opt">
                     <input type="text" name="password" id="password" class="input-txt">
@@ -155,10 +188,19 @@
                 <dd class="opt">
                     <input type="text" name="mobile" id="mobile" class="input-txt">
                     <span class="err"></span>
-                    <p class="notic">前台登陆账号，手机邮箱任意一项都可以</p>
+                    <p class="notic">前台登陆账号</p>
                 </dd>
             </dl>
             <dl class="row">
+                <dt class="tit">
+                    <label for="reg_money"><em>*</em>注册分</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="reg_money" id="reg_money" class="input-txt">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <!-- <dl class="row">
                 <dt class="tit">
                     <label for="email"><em>*</em>邮件地址</label>
                 </dt>
@@ -167,8 +209,8 @@
                     <span class="err"></span>
                     <p class="notic">前台登陆账号，手机邮箱任意一项都可以</p>
                 </dd>
-            </dl>
-            <dl class="row">
+            </dl> -->
+            <!-- <dl class="row">
                 <dt class="tit">
                     <label for="qq">QQ</label>
                 </dt>
@@ -176,8 +218,8 @@
                     <input type="text" value="<?php echo $navigation['url']; ?>" name="qq" id="qq" class="input-txt">
                     <span class="err"></span>
                 </dd>
-            </dl>
-            <dl class="row">
+            </dl> -->
+            <!-- <dl class="row">
                 <dt class="tit">
                     <label for="sex">性别</label>
                 </dt>
@@ -186,20 +228,20 @@
                     <input name="sex" type="radio" value="1">男  &nbsp;&nbsp;&nbsp;&nbsp;
                     <input name="sex" type="radio" value="2">女
                 </dd>
-            </dl>
+            </dl> -->
             <div class="bot"><a href="JavaScript:void(0);" onclick="checkUserUpdate();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
         </div>
     </form>
 </div>
 <script type="text/javascript">
     function checkUserUpdate(){
-        var email = $('input[name="email"]').val();
+        //var email = $('input[name="email"]').val();
         var mobile = $('input[name="mobile"]').val();
         var password = $('input[name="password"]').val();
-        var nickname = $.trim($('input[name="nickname"]').val());
+        var user_name = $.trim($('input[name="user_name"]').val());
         var error ='';
-        if(nickname == ''){
-            error += "昵称不能为空\n";
+        if(user_name == ''){
+            error += "用户名不能为空\n";
         }
         if(password == ''){
             error += "密码不能为空\n";
@@ -208,15 +250,8 @@
             error += "密码长度不正确\n";
         }
 
-        if(!checkEmail(email) && email != ''){
-            error += "邮箱地址有误\n";
-        }
         if(!checkMobile(mobile) && mobile != ''){
             error += "手机号码填写有误\n";
-        }
-
-        if(email == '' && mobile ==''){
-            error += "手机和邮箱请至少填一项\n";
         }
 
         if(error){

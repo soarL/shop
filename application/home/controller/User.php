@@ -31,7 +31,7 @@ class User extends Base{
         if(session('?user'))
         {
         	$user = session('user');
-            $user = M('users')->where("user_id", $user['user_id'])->find();
+            $user = M('admin')->where("user_id", $user['user_id'])->find();
             session('user',$user);  //覆盖session 中的 user               
         	$this->user = $user;
         	$this->user_id = $user['user_id'];
@@ -731,7 +731,7 @@ class User extends Base{
                 if (check_email($username)) {
                     $field = 'email';
                 }
-                $user = M('users')->where("email", $username)->whereOr('mobile', $username)->find();
+                $user = M('admin')->where("email", $username)->whereOr('mobile', $username)->find();
                 
                 if ($user) {
                     session('find_password', array('user_id' => $user['user_id'], 'username' => $username,
@@ -766,8 +766,8 @@ class User extends Base{
     		}
     		if($check['is_check']==1){
     			//$user = get_user_info($check['sender'],1);
-                $user = M('users')->where("mobile|email", '=', $check['sender'])->find();
-    			M('users')->where("user_id", $user['user_id'])->save(array('password'=>encrypt($password)));
+                $user = M('admin')->where("mobile|email", '=', $check['sender'])->find();
+    			M('admin')->where("user_id", $user['user_id'])->save(array('password'=>encrypt($password)));
     			session('validate_code',null);
                 $this->redirect('Home/User/finished');
     		}else{
@@ -797,7 +797,7 @@ class User extends Base{
     public function check_username(){
     	$username = I('post.username');
     	if(!empty($username)){
-    		$count = M('users')->where("email", $username)->whereOr('mobile', $username)->count();
+    		$count = M('admin')->where("email", $username)->whereOr('mobile', $username)->count();
     		exit(json_encode(intval($count)));
     	}else{
     		exit(json_encode(0));

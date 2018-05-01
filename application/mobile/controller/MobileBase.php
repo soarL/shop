@@ -42,7 +42,7 @@ class MobileBase extends Controller {
         if(strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')){
             $user_temp = session('user');
             if (isset($user_temp['user_id']) && $user_temp['user_id']) {
-                $user = M('users')->where("user_id", $user_temp['user_id'])->find();
+                $user = M('admin')->where("user_id", $user_temp['user_id'])->find();
                 if (!$user) {
                     $_SESSION['openid'] = 0;
                     session('user', null);

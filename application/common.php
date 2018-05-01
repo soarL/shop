@@ -18,8 +18,8 @@ use think\Db;
  * @return bool
  */
 function is_login(){
-    if(isset($_SESSION['admin_id']) && $_SESSION['admin_id'] > 0){
-        return $_SESSION['admin_id'];
+    if(isset($_SESSION['user_id']) && $_SESSION['user_id'] > 0){
+        return $_SESSION['user_id'];
     }else{
         return false;
     }
@@ -47,7 +47,7 @@ function get_user_info($user_id_or_name,$type = 0,$oauth=''){
         $map['unionid'] = $user_id_or_name;
         $map['oauth'] = $oauth;
     }
-    $user = M('users')->where($map)->find();
+    $user = M('admin')->where($map)->find();
     return $user;
 }
 
@@ -73,7 +73,7 @@ function update_user_level($user_id){
             $updata['level'] = $level;
             $updata['discount'] = $discount;
         }
-        M('users')->where("user_id", $user_id)->save($updata);
+        M('admin')->where("user_id", $user_id)->save($updata);
     }
 }
 
@@ -582,7 +582,7 @@ function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$distr
         'order_sn' => $order_sn
     );
     /* 更新用户信息 */
-//    $sql = "UPDATE __PREFIX__users SET user_money = user_money + $user_money," .
+//    $sql = "UPDATE __PREFIX__admin SET user_money = user_money + $user_money," .
 //        " pay_points = pay_points + $pay_points, distribut_money = distribut_money + $distribut_money WHERE user_id = $user_id";
     $update_data = array(
         'user_money'        => ['exp','user_money+'.$user_money],
@@ -591,7 +591,7 @@ function accountLog($user_id, $user_money = 0,$pay_points = 0, $desc = '',$distr
     );
     if(($user_money+$pay_points+$distribut_money) == 0)
         return false;
-    $update = Db::name('users')->where('user_id',$user_id)->update($update_data);
+    $update = Db::name('admin')->where('user_id',$user_id)->update($update_data);
     if($update){
         M('account_log')->add($account_log);
         return true;
@@ -840,8 +840,8 @@ function update_pay_status($order_sn,$ext=array())
         // 给他升级, 根据order表查看消费记录 给他会员等级升级 修改他的折扣 和 总金额
         update_user_level($order['user_id']);
         // 记录订单操作日志
-        if(array_key_exists('admin_id',$ext)){
-            logOrder($order['order_id'],$ext['note'],'付款成功',$ext['admin_id']);
+        if(array_key_exists('user_id',$ext)){
+            logOrder($order['order_id'],$ext['note'],'付款成功',$ext['user_id']);
         }else{
             logOrder($order['order_id'],'订单付款成功','付款成功',$order['user_id']);
         }
@@ -850,7 +850,7 @@ function update_pay_status($order_sn,$ext=array())
         // 成为分销商条件
         $distribut_condition = tpCache('distribut.condition');
         if($distribut_condition == 1)  // 购买商品付款才可以成为分销商
-            M('users')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
+            M('admin')->where("user_id", $order['user_id'])->save(array('is_distribut'=>1));
 
         //用户支付, 发送短信给商家
         $res = checkEnableSendSms("4");
@@ -904,7 +904,7 @@ function order_give($order)
     //促销优惠订单商品
     $prom_order_goods = M('order_goods')->where(['order_id' => $order['order_id'], 'prom_type' => 3])->select();
     //获取用户会员等级
-    $user_level = Db::name('users')->where(['user_id' => $order['user_id']])->getField('level');
+    $user_level = Db::name('admin')->where(['user_id' => $order['user_id']])->getField('level');
     foreach ($prom_order_goods as $goods) {
         //查找购买商品送优惠券活动
         $prom_goods = M('prom_goods')->where(['id' => $goods['prom_id'], 'type' => 3])->find();
@@ -1111,7 +1111,7 @@ function calculate_price($user_id = 0, $order_goods, $shipping_code = '', $shipp
 {
     $couponLogic = new app\home\logic\CouponLogic();
     $goodsLogic = new app\home\logic\GoodsLogic();
-    $user = M('users')->where("user_id", $user_id)->find();// 找出这个用户
+    $user = M('admin')->where("user_id", $user_id)->find();// 找出这个用户
     $result=[];
     if (empty($order_goods)){
         return array('status' => -9, 'msg' => '商品列表不能为空', 'result' => '');

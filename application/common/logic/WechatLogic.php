@@ -74,7 +74,7 @@ class WechatLogic
         }
         
         $wechatObj = $this->wechatObj;
-        if (!($user = M('users')->where('openid', $openid)->find())) {
+        if (!($user = M('admin')->where('openid', $openid)->find())) {
             if (false === ($wxdata = $wechatObj->getFanInfo($openid))) {
                 return ['status' => -1, 'msg' => $wechatObj->getError()];
             }
@@ -96,21 +96,21 @@ class WechatLogic
             if (!empty($msg['EventKey'])) {
                 $user['first_leader'] = substr($msg['EventKey'], strlen('qrscene_'));
                 if ($user['first_leader']) {
-                    $first_leader = M('users')->where('user_id', $user['first_leader'])->find();
+                    $first_leader = M('admin')->where('user_id', $user['first_leader'])->find();
                     if ($first_leader) {
                         $user['second_leader'] = $first_leader['first_leader']; //  第一级推荐人
                         $user['third_leader'] = $first_leader['second_leader']; // 第二级推荐人
                         //他上线分销的下线人数要加1
-                        M('users')->where('user_id', $user['first_leader'])->setInc('underling_number');
-                        M('users')->where('user_id', $user['second_leader'])->setInc('underling_number');
-                        M('users')->where('user_id', $user['third_leader'])->setInc('underling_number');
+                        M('admin')->where('user_id', $user['first_leader'])->setInc('underling_number');
+                        M('admin')->where('user_id', $user['second_leader'])->setInc('underling_number');
+                        M('admin')->where('user_id', $user['third_leader'])->setInc('underling_number');
                     }
                 } else {
                     $user['first_leader'] = 0;
                 }
             }
             
-            $ret = M('users')->insert($user);
+            $ret = M('admin')->insert($user);
             if (!$ret) {
                 return ['status' => -1, 'msg' => "保存数据出错"];
             }
@@ -146,7 +146,7 @@ class WechatLogic
         $toUsername   = $msg['ToUserName'];
         $wechatObj = $this->wechatObj;
         
-        if (!($user = M('users')->where('openid', $fromUsername)->find())) {
+        if (!($user = M('admin')->where('openid', $fromUsername)->find())) {
             $content = '请进入商城: '.SITE_URL.' , 再获取二维码哦';
             $reply = $wechatObj->createReplyMsgOfText($toUsername, $fromUsername, $content);
             exit($reply);

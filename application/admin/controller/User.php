@@ -42,7 +42,7 @@ class User extends Base {
         I('third_leader') && ($condition['third_leader'] = I('third_leader')); // 查看三级下线人有哪些
         $sort_order = I('order_by').' '.I('sort');
                
-        $model = M('users');
+        $model = M('admin');
         $count = $model->where($condition)->count();
         $Page  = new AjaxPage($count,10);
         //  搜索条件下 分页赋值
@@ -55,13 +55,13 @@ class User extends Base {
         $user_id_arr = get_arr_column($userList, 'user_id');
         if(!empty($user_id_arr))
         {
-            $first_leader = DB::query("select first_leader,count(1) as count  from __PREFIX__users where first_leader in(".  implode(',', $user_id_arr).")  group by first_leader");
+            $first_leader = DB::query("select first_leader,count(1) as count  from __PREFIX__admin where first_leader in(".  implode(',', $user_id_arr).")  group by first_leader");
             $first_leader = convert_arr_key($first_leader,'first_leader');
             
-            $second_leader = DB::query("select second_leader,count(1) as count  from __PREFIX__users where second_leader in(".  implode(',', $user_id_arr).")  group by second_leader");
+            $second_leader = DB::query("select second_leader,count(1) as count  from __PREFIX__admin where second_leader in(".  implode(',', $user_id_arr).")  group by second_leader");
             $second_leader = convert_arr_key($second_leader,'second_leader');            
             
-            $third_leader = DB::query("select third_leader,count(1) as count  from __PREFIX__users where third_leader in(".  implode(',', $user_id_arr).")  group by third_leader");
+            $third_leader = DB::query("select third_leader,count(1) as count  from __PREFIX__admin where third_leader in(".  implode(',', $user_id_arr).")  group by third_leader");
             $third_leader = convert_arr_key($third_leader,'third_leader');            
         }
         $this->assign('first_leader',$first_leader);
@@ -80,7 +80,7 @@ class User extends Base {
      */
     public function detail(){
         $uid = I('get.id');
-        $user = D('users')->where(array('user_id'=>$uid))->find();
+        $user = D('admin')->where(array('user_id'=>$uid))->find();
         if(!$user)
             exit($this->error('会员不存在'));
         if(IS_POST){
@@ -98,25 +98,25 @@ class User extends Base {
 
             if(!empty($_POST['email']))
             {   $email = trim($_POST['email']);
-                $c = M('users')->where("user_id != $uid and email = '$email'")->count();
+                $c = M('admin')->where("user_id != $uid and email = '$email'")->count();
                 $c && exit($this->error('邮箱不得和已有用户重复'));
             }            
             
             if(!empty($_POST['mobile']))
             {   $mobile = trim($_POST['mobile']);
-                $c = M('users')->where("user_id != $uid and mobile = '$mobile'")->count();
+                $c = M('admin')->where("user_id != $uid and mobile = '$mobile'")->count();
                 $c && exit($this->error('手机号不得和已有用户重复'));
             }            
             
-            $row = M('users')->where(array('user_id'=>$uid))->save($_POST);
+            $row = M('admin')->where(array('user_id'=>$uid))->save($_POST);
             if($row)
                 exit($this->success('修改成功'));
             exit($this->error('未作内容修改或修改失败'));
         }
         
-        $user['first_lower'] = M('users')->where("first_leader = {$user['user_id']}")->count();
-        $user['second_lower'] = M('users')->where("second_leader = {$user['user_id']}")->count();
-        $user['third_lower'] = M('users')->where("third_leader = {$user['user_id']}")->count();
+        $user['first_lower'] = M('admin')->where("first_leader = {$user['user_id']}")->count();
+        $user['second_lower'] = M('admin')->where("second_leader = {$user['user_id']}")->count();
+        $user['third_lower'] = M('admin')->where("third_leader = {$user['user_id']}")->count();
  
         $this->assign('user',$user);
         return $this->fetch();
@@ -150,12 +150,12 @@ class User extends Base {
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">积分</td>';
     	$strTable .= '<td style="text-align:center;font-size:12px;" width="*">累计消费</td>';
     	$strTable .= '</tr>';
-    	$count = M('users')->count();
+    	$count = M('admin')->count();
     	$p = ceil($count/5000);
     	for($i=0;$i<$p;$i++){
     		$start = $i*5000;
     		$end = ($i+1)*5000;
-    		$userList = M('users')->order('user_id')->limit($start.','.$end)->select();
+    		$userList = M('admin')->order('user_id')->limit($start.','.$end)->select();
     		if(is_array($userList)){
     			foreach($userList as $k=>$val){
     				$strTable .= '<tr>';
@@ -196,7 +196,7 @@ class User extends Base {
      */
     public function delete(){
         $uid = I('get.id');
-        $row = M('users')->where(array('user_id'=>$uid))->delete();
+        $row = M('admin')->where(array('user_id'=>$uid))->delete();
         if($row){
             $this->success('成功删除会员');
         }else{
@@ -209,7 +209,7 @@ class User extends Base {
     public function ajax_delete(){
         $uid = I('id');
         if($uid){
-            $row = M('users')->where(array('user_id'=>$uid))->delete();
+            $row = M('admin')->where(array('user_id'=>$uid))->delete();
             if($row !== false){
                 $this->ajaxReturn(array('status' => 1, 'msg' => '删除成功', 'data' => ''));
             }else{
@@ -246,7 +246,7 @@ class User extends Base {
         $user_id = $order_info['user_id'];
         if(!$user_id > 0)
             $this->error("参数有误");
-        $user = M('users')->field('user_id,user_money,frozen_money,pay_points,is_lock')->where('user_id',$user_id)->find();
+        $user = M('admin')->field('user_id,user_money,frozen_money,pay_points,is_lock')->where('user_id',$user_id)->find();
         if(IS_POST){
             $return_info = I('post.');
             $return_id   = $return_info['return_id'];
@@ -269,7 +269,7 @@ class User extends Base {
                 if($f_op_type==1 and $revision_frozen_money > $user['user_money']){ $this->error("用户剩余资金不足！！");}
                 if($f_op_type==0 and $revision_frozen_money > $user['frozen_money']){$this->error("冻结的资金不足！！");}
                 $user_money = $f_op_type ? 0-$revision_frozen_money : $revision_frozen_money ;    //计算用户剩余资金
-                M('users')->where('user_id',$user_id)->update(['frozen_money' => $frozen_money]);
+                M('admin')->where('user_id',$user_id)->update(['frozen_money' => $frozen_money]);
             }
 
             if(accountLog($user_id,$user_money,$pay_points,$return_info['desc'],0,$return_info['order_id'],$return_info['order_sn'])){
@@ -400,7 +400,7 @@ class User extends Base {
         $search_key = trim(I('search_key'));        
         if(strstr($search_key,'@'))    
         {
-            $list = M('users')->where(" email like '%$search_key%' ")->select();        
+            $list = M('admin')->where(" email like '%$search_key%' ")->select();        
             foreach($list as $key => $val)
             {
                 echo "<option value='{$val['user_id']}'>{$val['email']}</option>";
@@ -408,7 +408,7 @@ class User extends Base {
         }
         else
         {
-            $list = M('users')->where(" mobile like '%$search_key%' ")->select();        
+            $list = M('admin')->where(" mobile like '%$search_key%' ")->select();        
             foreach($list as $key => $val)
             {
                 echo "<option value='{$val['user_id']}'>{$val['mobile']}</option>";
@@ -422,7 +422,7 @@ class User extends Base {
      */
     public function ajax_distribut_tree()
     {
-          $list = M('users')->where("first_leader = 1")->select();
+          $list = M('admin')->where("first_leader = 1")->select();
           return $this->fetch();
     }
 
@@ -437,7 +437,7 @@ class User extends Base {
         $user_id_array = I('get.user_id_array');
         $users = array();
         if (!empty($user_id_array)) {
-            $users = M('users')->field('user_id,nickname')->where(array('user_id' => array('IN', $user_id_array)))->select();
+            $users = M('admin')->field('user_id,nickname')->where(array('user_id' => array('IN', $user_id_array)))->select();
         }
         $this->assign('users',$users);
         return $this->fetch();
@@ -453,10 +453,10 @@ class User extends Base {
         $call_back = I('call_back');//回调方法
         $text= I('post.text');//内容
         $type = I('post.type', 0);//个体or全体
-        $admin_id = session('admin_id');
+        $user_id = session('user_id');
         $users = I('post.user/a');//个体id
         $message = array(
-            'admin_id' => $admin_id,
+            'user_id' => $user_id,
             'message' => $text,
             'category' => 0,
             'send_time' => time()
@@ -495,7 +495,7 @@ class User extends Base {
                 'user_id' => array('IN', $user_id_array),
                 'email' => array('neq', '')
             );
-            $users = M('users')->field('user_id,nickname,email')->where($user_where)->select();
+            $users = M('admin')->field('user_id,nickname,email')->where($user_where)->select();
         }
         $this->assign('smtp', tpCache('smtp'));
         $this->assign('users', $users);
@@ -516,7 +516,7 @@ class User extends Base {
         $email= I('post.email');
         if (!empty($users)) {
             $user_id_array = implode(',', $users);
-            $users = M('users')->field('email')->where(array('user_id' => array('IN', $user_id_array)))->select();
+            $users = M('admin')->field('email')->where(array('user_id' => array('IN', $user_id_array)))->select();
             $to = array();
             foreach ($users as $user) {
                 if (check_email($user['email'])) {
@@ -590,7 +590,7 @@ class User extends Base {
     {
         $id = I('id');
         $withdrawals = DB::name('withdrawals')->where('id',$id)->find();
-        $user = M('users')->where("user_id = {$withdrawals[user_id]}")->find();
+        $user = M('admin')->where("user_id = {$withdrawals[user_id]}")->find();
         if (IS_POST) {
             $data = I('post.');
             // 如果是已经给用户转账 则生成转账流水记录
@@ -608,7 +608,7 @@ class User extends Base {
                     'money' => $withdrawals['money'],
                     'status' => 1,
                     'create_time' => time(),
-                    'admin_id' => session('admin_id'),
+                    'user_id' => session('user_id'),
                     'withdrawals_id' => $withdrawals['id'],
                     'remark' => $data['remark'],
                 );
@@ -640,7 +640,7 @@ class User extends Base {
             $r = M('withdrawals')->where('id','in', $id)->save(array('status'=>$status,'refuse_time'=>time()));
         }else if($status == 2){
             foreach($withdrawals as $val){
-                $user = M('users')->where(array('user_id'=>$val['user_id']))->find();
+                $user = M('admin')->where(array('user_id'=>$val['user_id']))->find();
                 if($user['user_money'] < $val['money'])
                 {
                     $data['status'] = -2;

@@ -37,7 +37,7 @@ class Cart extends Base {
         $this->cartLogic = new CartLogic();
         if (session('?user')) {
             $user = session('user');
-            $user = M('users')->where("user_id", $user['user_id'])->find();
+            $user = M('admin')->where("user_id", $user['user_id'])->find();
             session('user', $user);  //覆盖session 中的 user
             $this->user = $user;
             $this->user_id = $user['user_id'];

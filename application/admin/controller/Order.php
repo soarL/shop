@@ -240,7 +240,7 @@ class Order extends Base {
             }
         }
         if($adminIds && count($adminIds) > 0){
-            $admins = M("admin")->where("admin_id in (".implode(",",$adminIds).")")->getField("admin_id , user_name", true);
+            $admins = M("admin")->where("user_id in (".implode(",",$adminIds).")")->getField("user_id , user_name", true);
         }
         if($has_user){
             $user = M("users")->alias('u')->field('u.nickname')->join('__ORDER__ o', 'o.user_id = u.user_id')->find();
@@ -465,8 +465,8 @@ class Order extends Base {
         $order = $orderLogic->getOrderInfo($order_id);
         $this->editable($order);
         if(IS_POST){
-        	$admin_id = session('admin_id');
-            if(empty($admin_id)){
+        	$user_id = session('user_id');
+            if(empty($user_id)){
                 $this->error('非法操作');
                 exit;
             }
@@ -609,7 +609,7 @@ class Order extends Base {
     	$order = $orderLogic->getOrderInfo($order_id);
     	$orderGoods = $orderLogic->getOrderGoods($order_id,2);
         if(!$orderGoods)$this->error('此订单商品已完成退货或换货');//已经完成售后的不能再发货
-		$delivery_record = M('delivery_doc')->alias('d')->join('__ADMIN__ a','a.admin_id = d.admin_id')->where('d.order_id='.$order_id)->select();
+		$delivery_record = M('delivery_doc')->alias('d')->join('__ADMIN__ a','a.user_id = d.user_id')->where('d.order_id='.$order_id)->select();
 		if($delivery_record){
 			$order['invoice_no'] = $delivery_record[count($delivery_record)-1]['invoice_no'];
 		}
@@ -677,7 +677,7 @@ class Order extends Base {
             $this->error('非法操作!');
             exit;
         }
-        $user = M('users')->where("user_id = {$return_goods[user_id]}")->find();
+        $user = M('admin')->where("user_id = {$return_goods[user_id]}")->find();
         $goods = M('goods')->where("goods_id = {$return_goods[goods_id]}")->find();
         $type_msg = array('仅退款','退货退款','换货');
         $status_msg = C('REFUND_STATUS');
@@ -803,7 +803,7 @@ class Order extends Base {
             if($action !=='pay'){
                 $res = $orderLogic->orderActionLog($order_id,$action,I('note'));
             }
-        	 $a = $orderLogic->orderProcessHandle($order_id,$action,array('note'=>I('note'),'admin_id'=>0));
+        	 $a = $orderLogic->orderProcessHandle($order_id,$action,array('note'=>I('note'),'user_id'=>0));
         	 if($res !== false && $a !== false){
                  if ($action == 'remove') {
                      exit(json_encode(array('status' => 1, 'msg' => '操作成功', 'data' => array('url' => U('admin/order/index')))));
@@ -836,9 +836,9 @@ class Order extends Base {
     	if($begin && $end){
     		$condition['log_time'] = array('between',"$begin,$end");
     	}
-    	$admin_id = I('admin_id');
-		if($admin_id >0 ){
-			$condition['action_user'] = $admin_id;
+    	$user_id = I('user_id');
+		if($user_id >0 ){
+			$condition['action_user'] = $user_id;
 		}
     	$count = $log->where($condition)->count();
     	$Page = new Page($count,20);
@@ -860,7 +860,7 @@ class Order extends Base {
     	$this->assign('list',$list);
     	$this->assign('pager',$Page);
     	$this->assign('page',$show);   	
-    	$admin = M('admin')->getField('admin_id,user_name');
+    	$admin = M('admin')->getField('user_id,user_name');
     	$this->assign('admin',$admin);    	
     	return $this->fetch();
     }
@@ -1026,7 +1026,7 @@ class Order extends Base {
   
                 M('order_action')->add([
                     'order_id'      => $order_id,
-                    'action_user'   => session('admin_id'),
+                    'action_user'   => session('user_id'),
                     'order_status'  => 0,  //待支付
                     'shipping_status' => 0, //待确认
                     'action_note'   => $order['admin_note'],

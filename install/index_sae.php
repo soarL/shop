@@ -208,7 +208,7 @@ switch ($step) {
             $ip = get_client_ip();
             $ip =empty($ip)?"0.0.0.0":$ip;
             $password = sp_password($password, $dbPrefix);
-			mysql_query("INSERT INTO `{$dbPrefix}admin` (admin_id,user_name,email,password,add_time,last_ip,role_id) VALUES ('1','$username','$email','$password','$time','$ip','0')");
+			mysql_query("INSERT INTO `{$dbPrefix}admin` (user_id,user_name,email,password,add_time,last_ip,role_id) VALUES ('1','$username','$email','$password','$time','$ip','0')");
 
             $message = '成功添加管理员<br />成功写入配置文件<br>安装完成．';
             $arr = array('n' => 999999, 'msg' => $message);

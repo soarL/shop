@@ -93,7 +93,7 @@
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: left; width: 100px;">{$vo.admin_id}</div>
+								<div style="text-align: left; width: 100px;">{$vo.user_id}</div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: left; width: 100px;">{$vo.user_name}</div>
@@ -109,9 +109,9 @@
 							</td>
 							<td align="center" class="handle">
 								<div style="text-align: center; width: 170px; max-width:170px;">
-									<a href="{:U('Admin/admin_info',array('admin_id'=>$vo['admin_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
-									<if condition="$vo['admin_id'] gt 1">
-										<a class="btn red"  href="javascript:void(0)" data-url="{:U('Admin/adminHandle')}" data-id="{$vo.admin_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+									<a href="{:U('Admin/admin_info',array('user_id'=>$vo['user_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+									<if condition="$vo['user_id'] gt 1">
+										<a class="btn red"  href="javascript:void(0)" data-url="{:U('Admin/adminHandle')}" data-id="{$vo.user_id}" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
 									</if>
 								</div>
 							</td>
@@ -151,7 +151,7 @@
 			$.ajax({
 				type: 'post',
 				url: $(obj).attr('data-url'),
-				data : {act:'del',admin_id:$(obj).attr('data-id')},
+				data : {act:'del',user_id:$(obj).attr('data-id')},
 				dataType: 'json',
 				success: function (data) {
 					layer.closeAll();

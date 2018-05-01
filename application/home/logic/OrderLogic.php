@@ -131,9 +131,9 @@ class OrderLogic extends Model
         }
         // 3 扣除积分 扣除余额
         if($car_price['pointsFee']>0)
-            M('Users')->where("user_id", $user_id)->setDec('pay_points',($car_price['pointsFee'] * tpCache('shopping.point_rate'))); // 消费积分
+            M('admin')->where("user_id", $user_id)->setDec('pay_points',($car_price['pointsFee'] * tpCache('shopping.point_rate'))); // 消费积分
         if($car_price['balance']>0)
-            M('Users')->where("user_id", $user_id)->setDec('user_money',$car_price['balance']); // 抵扣余额
+            M('admin')->where("user_id", $user_id)->setDec('user_money',$car_price['balance']); // 抵扣余额
         // 4 删除已提交订单商品
         M('Cart')->where(['user_id' => $user_id,'selected' => 1])->delete();
 
@@ -156,7 +156,7 @@ class OrderLogic extends Model
             $distributLogic->rebate_log($order); // 生成分成记录
         }
         // 如果有微信公众号 则推送一条消息到微信
-        $user = M('users')->where("user_id", $user_id)->find();
+        $user = M('admin')->where("user_id", $user_id)->find();
         if($user['oauth']== 'weixin')
         {
             $wx_user = M('wx_user')->find();
@@ -246,7 +246,7 @@ class OrderLogic extends Model
         $data2['prom_id']    = $goods_activity['act_id'];
         Db::name('order_goods')->insert($data2);
         // 如果有微信公众号 则推送一条消息到微信
-        $user = M('users')->where("user_id = $user_id")->find();
+        $user = M('admin')->where("user_id = $user_id")->find();
         if($user['oauth']== 'weixin')
         {
             $wx_user = M('wx_user')->find();

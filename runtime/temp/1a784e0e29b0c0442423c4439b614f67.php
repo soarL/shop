@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:45:"./application/admin/view2/user\levelList.html";i:1499420862;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:45:"./application/admin/view2/user\levelList.html";i:1525166319;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -158,13 +158,16 @@
 							<div style="text-align: left; width: 50px;" class="">等级名称</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 100px;" class="">消费额度</div>
+							<div style="text-align: center; width: 100px;" class="">注册分</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 50px;" class="">折扣率</div>
+							<div style="text-align: center; width: 50px;" class="">股权比例</div>
 						</th>
 						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">等级描述</div>
+							<div style="text-align: center; width: 100px;" class="">股权上限</div>
+						</th>
+						<th align="center" abbr="article_time" axis="col6" class="">
+							<div style="text-align: center; width: 100px;" class="">见点奖层级</div>
 						</th>
 						<th align="center" axis="col1" class="handle">
 							<div style="text-align: center; width: 150px;">操作</div>
@@ -212,6 +215,9 @@
 							</td>
 							<td align="center" class="">
 								<div style="text-align: center; width: 100px;"><?php echo $vo['describe']; ?></div>
+							</td>
+							<td align="center" class="">
+								<div style="text-align: center; width: 100px;"><?php echo $vo['jdlevel']; ?></div>
 							</td>
 							<td align="center" class="handle">
 								<div style="text-align: center; width: 170px; max-width:170px;">

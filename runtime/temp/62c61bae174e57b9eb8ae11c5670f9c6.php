@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/admin\modify_pwd.html";i:1499420862;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/admin\modify_pwd.html";i:1525090168;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -115,7 +115,7 @@
 </head>
 <div class="ncap-form-default">
   <form id="admin_form" method="post" action="" name="admin_form">
-    <input type="hidden" name="admin_id" value="<?php echo $info['admin_id']; ?>">
+    <input type="hidden" name="user_id" value="<?php echo $info['user_id']; ?>">
     <dl class="row">
       <dt class="tit"><label for="old_pw"><em>*</em>原密码</label><!-- 原密码 --></dt>
       <dd class="opt"><input id="old_pw" name="old_pw" class="txt valid" type="password">

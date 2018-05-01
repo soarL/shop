@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:42:"./application/admin/view2/index\index.html";i:1525070822;s:45:"./application/admin/view2/public\menubox.html";i:1525062241;s:42:"./application/admin/view2/public\left.html";i:1525071445;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:42:"./application/admin/view2/index\index.html";i:1525160893;s:45:"./application/admin/view2/public\menubox.html";i:1525062241;s:42:"./application/admin/view2/public\left.html";i:1525071445;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -134,8 +134,8 @@ function call_back(picname){
   </div>
   <div class="nc-module-menu">
     <ul class="nc-row">
-      <!-- <li data-param="system"><a href="javascript:void(0);">系统</a></li> -->
-      <!-- <li data-param="shop"><a href="javascript:void(0);">商城</a></li> -->
+      <li data-param="index"><a href="javascript:void(0);">商城</a></li>
+      <li data-param="admin"><a href="javascript:void(0);">系统</a></li>
 <!--      <li data-param="mobile"><a href="javascript:void(0);">模板</a></li>-->
       <!-- <li data-param="resource"><a href="javascript:void(0);">插件</a></li>       -->
     </ul>
@@ -164,7 +164,7 @@ function call_back(picname){
       <div class="manager-menu">
         <div class="title">
           <h4>最后登录</h4>
-          <a href="javascript:void(0);" onClick="CUR_DIALOG = ajax_form('modifypw', '修改密码', '<?php echo U('Admin/modify_pwd',array('admin_id'=>$admin_info['admin_id'])); ?>');" class="edit-password">修改密码</a> </div>
+          <a href="javascript:void(0);" onClick="CUR_DIALOG = ajax_form('modifypw', '修改密码', '<?php echo U('Admin/modify_pwd',array('user_id'=>$admin_info['user_id'])); ?>');" class="edit-password">修改密码</a> </div>
         <div class="login-date"> <?php echo date('Y-m-d H:i:s',session('last_login_time'));?> <span>(IP: <?php echo session('last_login_ip');?> )</span> </div>
         <!-- <div class="title">
           <h4>常用操作</h4>

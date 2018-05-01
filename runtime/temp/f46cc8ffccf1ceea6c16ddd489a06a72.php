@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:42:"./application/admin/view2/admin\index.html";i:1499420862;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:42:"./application/admin/view2/admin\index.html";i:1525090168;s:44:"./application/admin/view2/public\layout.html";i:1499420862;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -207,7 +207,7 @@
 								<div style="width: 24px;"><i class="ico-check"></i></div>
 							</td>
 							<td align="left" class="">
-								<div style="text-align: left; width: 100px;"><?php echo $vo['admin_id']; ?></div>
+								<div style="text-align: left; width: 100px;"><?php echo $vo['user_id']; ?></div>
 							</td>
 							<td align="left" class="">
 								<div style="text-align: left; width: 100px;"><?php echo $vo['user_name']; ?></div>
@@ -223,9 +223,9 @@
 							</td>
 							<td align="center" class="handle">
 								<div style="text-align: center; width: 170px; max-width:170px;">
-									<a href="<?php echo U('Admin/admin_info',array('admin_id'=>$vo['admin_id'])); ?>" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
-									<?php if($vo['admin_id'] > 1): ?>
-										<a class="btn red"  href="javascript:void(0)" data-url="<?php echo U('Admin/adminHandle'); ?>" data-id="<?php echo $vo['admin_id']; ?>" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
+									<a href="<?php echo U('Admin/admin_info',array('user_id'=>$vo['user_id'])); ?>" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+									<?php if($vo['user_id'] > 1): ?>
+										<a class="btn red"  href="javascript:void(0)" data-url="<?php echo U('Admin/adminHandle'); ?>" data-id="<?php echo $vo['user_id']; ?>" onClick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
 									<?php endif; ?>
 								</div>
 							</td>
@@ -265,7 +265,7 @@
 			$.ajax({
 				type: 'post',
 				url: $(obj).attr('data-url'),
-				data : {act:'del',admin_id:$(obj).attr('data-id')},
+				data : {act:'del',user_id:$(obj).attr('data-id')},
 				dataType: 'json',
 				success: function (data) {
 					layer.closeAll();

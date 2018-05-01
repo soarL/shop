@@ -387,7 +387,7 @@ class MessageLogic extends Model
         //推送消息
         $push_ids = [];
         if (!$msg['type']) {
-            $push_ids = M('users')->where(['user_id' => ['IN', $user_ids]])->column('push_id');
+            $push_ids = M('admin')->where(['user_id' => ['IN', $user_ids]])->column('push_id');
         }
         $push = new PushLogic;
         $res = $push->push($push_data, $msg['type'], $push_ids);
@@ -396,7 +396,7 @@ class MessageLogic extends Model
         }
 
         $message = [
-            'admin_id'  => isset($msg['admin_id']) ? $msg['admin_id'] : 0,
+            'user_id'  => isset($msg['user_id']) ? $msg['user_id'] : 0,
             'seller_id' => isset($msg['seller_id']) ? $msg['seller_id'] : 0,
             'category'  => $msg['category'],
             'type'      => $msg['type'], 
@@ -450,7 +450,7 @@ class MessageLogic extends Model
         } else {
             $user['message_mask'] &= ~(1 << $type);
         }
-        M('users')->where('user_id', $user['user_id']) ->save(['message_mask' => $user['message_mask']]);
+        M('admin')->where('user_id', $user['user_id']) ->save(['message_mask' => $user['message_mask']]);
 
         return ['status' => 1, 'msg' => '设置成功'];
     }

@@ -28,7 +28,7 @@ class Admin extends Base {
     	if(empty($keywords)){
     		$res = D('admin')->select();
     	}else{
-			$res = DB::name('admin')->where('user_name','like','%'.$keywords.'%')->order('admin_id')->select();
+			$res = DB::name('admin')->where('user_name','like','%'.$keywords.'%')->order('user_id')->select();
     	}
     	$role = D('admin_role')->getField('role_id,role_name');
     	if($res && $role){
@@ -47,13 +47,13 @@ class Admin extends Base {
      * @return \think\mixed
      */
     public function modify_pwd(){
-        $admin_id = I('admin_id/d',0);
+        $user_id = I('user_id/d',0);
         $oldPwd = I('old_pw/s');
         $newPwd = I('new_pw/s');
         $new2Pwd = I('new_pw2/s');
        
-        if($admin_id){
-            $info = D('admin')->where("admin_id", $admin_id)->find();
+        if($user_id){
+            $info = D('admin')->where("user_id", $user_id)->find();
             $info['password'] =  "";
             $this->assign('info',$info);
         }
@@ -62,13 +62,13 @@ class Admin extends Base {
             //修改密码
             $enOldPwd = encrypt($oldPwd);
             $enNewPwd = encrypt($newPwd);
-            $admin = M('admin')->where('admin_id' , $admin_id)->find();
+            $admin = M('admin')->where('user_id' , $user_id)->find();
             if(!$admin || $admin['password'] != $enOldPwd){
                 exit(json_encode(array('status'=>-1,'msg'=>'旧密码不正确')));
             }else if($newPwd != $new2Pwd){
                 exit(json_encode(array('status'=>-1,'msg'=>'两次密码不一致')));
             }else{
-                $row = M('admin')->where('admin_id' , $admin_id)->save(array('password' => $enNewPwd));
+                $row = M('admin')->where('user_id' , $user_id)->save(array('password' => $enNewPwd));
                 if($row){
                     exit(json_encode(array('status'=>1,'msg'=>'修改成功')));
                 }else{
@@ -80,13 +80,13 @@ class Admin extends Base {
     }
     
     public function admin_info(){
-    	$admin_id = I('get.admin_id/d',0);
-    	if($admin_id){
-    		$info = D('admin')->where("admin_id", $admin_id)->find();
+    	$user_id = I('get.user_id/d',0);
+    	if($user_id){
+    		$info = D('admin')->where("user_id", $user_id)->find();
 			$info['password'] =  "";
     		$this->assign('info',$info);
     	}
-    	$act = empty($admin_id) ? 'add' : 'edit';
+    	$act = empty($user_id) ? 'add' : 'edit';
     	$this->assign('act',$act);
     	$role = D('admin_role')->select();
     	$this->assign('role',$role);
@@ -101,7 +101,7 @@ class Admin extends Base {
     		$data['password'] = encrypt($data['password']);
     	}
     	if($data['act'] == 'add'){
-    		unset($data['admin_id']);    		
+    		unset($data['user_id']);    		
     		$data['add_time'] = time();
     		if(D('admin')->where("user_name", $data['user_name'])->count()){
     			$this->error("此用户名已被注册，请更换",U('Admin/Admin/admin_info'));
@@ -111,11 +111,11 @@ class Admin extends Base {
     	}
     	
     	if($data['act'] == 'edit'){
-    		$r = D('admin')->where('admin_id', $data['admin_id'])->save($data);
+    		$r = D('admin')->where('user_id', $data['user_id'])->save($data);
     	}
     	
-        if($data['act'] == 'del' && $data['admin_id']>1){
-    		$r = D('admin')->where('admin_id', $data['admin_id'])->delete();
+        if($data['act'] == 'del' && $data['user_id']>1){
+    		$r = D('admin')->where('user_id', $data['user_id'])->delete();
     		exit(json_encode(1));
     	}
     	
@@ -131,7 +131,7 @@ class Admin extends Base {
      * 管理员登陆
      */
     public function login(){
-        if(session('?admin_id') && session('admin_id')>0){
+        if(session('?user_id') && session('user_id')>0){
              $this->error("您已登录",U('Admin/Index/index'));
         }
       
@@ -147,9 +147,9 @@ class Admin extends Base {
                 unset($condition['password']);
                	$admin_info = M('admin')->join(PREFIX.'admin_role', PREFIX.'admin.role_id='.PREFIX.'admin_role.role_id','INNER')->where($condition)->find();
                 if(is_array($admin_info)){
-                    session('admin_id',$admin_info['admin_id']);
+                    session('user_id',$admin_info['user_id']);
                     session('act_list',$admin_info['act_list']);
-                    M('admin')->where("admin_id = ".$admin_info['admin_id'])->save(array('last_login'=>time(),'last_ip'=>  request()->ip()));
+                    M('admin')->where("user_id = ".$admin_info['user_id'])->save(array('last_login'=>time(),'last_ip'=>  request()->ip()));
                     session('last_login_time',$admin_info['last_login']);
                     session('last_login_ip',$admin_info['last_ip']);
                     adminLog('后台登录');
@@ -269,7 +269,7 @@ class Admin extends Base {
     
     public function log(){
     	$p = I('p/d',1);
-    	$logs = DB::name('admin_log')->alias('l')->join('__ADMIN__ a','a.admin_id =l.admin_id')->order('log_time DESC')->page($p.',20')->select();
+    	$logs = DB::name('admin_log')->alias('l')->join('__ADMIN__ a','a.user_id =l.user_id')->order('log_time DESC')->page($p.',20')->select();
     	$this->assign('list',$logs);
     	$count = DB::name('admin_log')->count();
     	$Page = new Page($count,20);
@@ -290,7 +290,7 @@ class Admin extends Base {
 		$show = $page->show();
 		$supplier_list = DB::name('suppliers')
 				->alias('s')
-				->field('s.*,a.admin_id,a.user_name')
+				->field('s.*,a.user_id,a.user_name')
 				->join('__ADMIN__ a','a.suppliers_id = s.suppliers_id','LEFT')
 				->limit($page->firstRow, $page->listRows)
 				->select();
@@ -308,7 +308,7 @@ class Admin extends Base {
 		if ($suppliers_id) {
 			$info = DB::name('suppliers')
 					->alias('s')
-					->field('s.*,a.admin_id,a.user_name')
+					->field('s.*,a.user_id,a.user_name')
 					->join('__ADMIN__ a','a.suppliers_id = s.suppliers_id','LEFT')
 					->where(array('s.suppliers_id' => $suppliers_id))
 					->find();
@@ -316,7 +316,7 @@ class Admin extends Base {
 		}
 		$act = empty($suppliers_id) ? 'add' : 'edit';
 		$this->assign('act', $act);
-		$admin = M('admin')->field('admin_id,user_name')->select();
+		$admin = M('admin')->field('user_id,user_name')->select();
 		$this->assign('admin', $admin);
 		return $this->fetch();
 	}
@@ -336,20 +336,20 @@ class Admin extends Base {
 				$this->error("此供应商名称已被注册，请更换", U('Admin/Admin/supplier_info'));
 			} else {
 				$r = $suppliers_model->insertGetId($data);
-				if (!empty($data['admin_id'])) {
+				if (!empty($data['user_id'])) {
 					$admin_data['suppliers_id'] = $r;
 					M('admin')->where(array('suppliers_id' => $admin_data['suppliers_id']))->save(array('suppliers_id' => 0));
-					M('admin')->where(array('admin_id' => $data['admin_id']))->save($admin_data);
+					M('admin')->where(array('user_id' => $data['user_id']))->save($admin_data);
 				}
 			}
 		}
 		//改
 		if ($data['act'] == 'edit' && $data['suppliers_id'] > 0) {
 			$r = $suppliers_model->where('suppliers_id',$data['suppliers_id'])->save($data);
-			if (!empty($data['admin_id'])) {
+			if (!empty($data['user_id'])) {
 				$admin_data['suppliers_id'] = $data['suppliers_id'];
 				M('admin')->where(array('suppliers_id' => $admin_data['suppliers_id']))->save(array('suppliers_id' => 0));
-				M('admin')->where(array('admin_id' => $data['admin_id']))->save($admin_data);
+				M('admin')->where(array('user_id' => $data['user_id']))->save($admin_data);
 			}
 		}
 		//删

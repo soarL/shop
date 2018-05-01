@@ -14,7 +14,7 @@
     </div>
     <form class="form-horizontal" id="adminHandle" action="{:U('Admin/adminHandle')}" method="post">
         <input type="hidden" name="act" value="{$act}">
-        <input type="hidden" name="admin_id" value="{$info.admin_id}">
+        <input type="hidden" name="user_id" value="{$info.user_id}">
         <div class="ncap-form-default">
             <dl class="row">
                 <dt class="tit">
@@ -43,7 +43,7 @@
                     <p class="notic">登陆密码</p>
                 </dd>
             </dl>
-            <if condition=" ($act eq 'add') OR ($info['admin_id'] gt 1)">
+            <if condition=" ($act eq 'add') OR ($info['user_id'] gt 1)">
                 <dl class="row">
                     <dt class="tit">
                         <label><em>*</em>所属角色</label>

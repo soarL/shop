@@ -1,6 +1,39 @@
 <?php
 return	array(	
 	'index'=>array('name'=>'系统','child'=>array(
+			array('name' => '主菜单','child' => array(
+					array('name'=>'首页','act'=>'index','op'=>'Zts'),
+			)),
+			array('name' => '基本信息','child' => array(
+					array('name'=>'个人信息','act'=>'user','op'=>'Zts'),
+					array('name'=>'修改密码','act'=>'pwd','op'=>'Zts'),
+					array('name'=>'银行信息','act'=>'bank','op'=>'Zts'),
+			)),
+			array('name' => '我的组织图','child' => array(
+					array('name'=>'组织图','act'=>'tree','op'=>'Zts'),
+					array('name'=>'推荐图','act'=>'tuijian','op'=>'Zts'),
+			)),
+			array('name' => '奖金','child' => array(
+					array('name'=>'奖金统计','act'=>'bonus','op'=>'Zts'),
+					array('name'=>'直推奖','act'=>'first','op'=>'Zts'),
+					array('name'=>'见点奖','act'=>'third','op'=>'Zts'),
+			)),
+			array('name' => '钱包','child' => array(
+					array('name'=>'现金分','act'=>'acc','op'=>'Zts'),
+					array('name'=>'注册分','act'=>'reg','op'=>'Zts'),
+					array('name'=>'购物分','act'=>'shop','op'=>'Zts'),
+					array('name'=>'提现记录','act'=>'withdraw','op'=>'Zts'),
+			)),
+			array('name' => '股权交易','child' => array(
+					array('name'=>'交易中心','act'=>'center','op'=>'Zts'),
+					array('name'=>'股权','act'=>'right','op'=>'Zts'),
+					array('name'=>'卖出记录','act'=>'sale','op'=>'Zts'),
+			)),
+			array('name' => '公告','child'=>array(
+						array('name' => '公告', 'act'=>'msg', 'op'=>'Zts'),
+			)),
+	)),
+	'admin'=>array('name'=>'系统','child'=>array(
 				array('name' => '概览','child' => array(
 						array('name'=>'系统后台','act'=>'welcome','op'=>'Index'),
 				)),
@@ -19,7 +52,7 @@ return	array(
 				array('name' => '会员','child'=>array(
 						array('name'=>'会员列表','act'=>'index','op'=>'User'),
 						array('name'=>'会员等级','act'=>'levelList','op'=>'User'),
-						array('name'=>'充值记录','act'=>'recharge','op'=>'User'),
+						// array('name'=>'充值记录','act'=>'recharge','op'=>'User'),
 						array('name'=>'提现申请','act'=>'withdrawals','op'=>'User'),
 						// array('name'=>'汇款记录','act'=>'remittance','op'=>'User'),
 						//array('name'=>'会员整合','act'=>'integrate','op'=>'User'),
@@ -40,19 +73,10 @@ return	array(
 						array('name' => '管理员列表', 'act'=>'index', 'op'=>'Admin'),
 						array('name' => '角色管理', 'act'=>'role', 'op'=>'Admin'),
 						array('name'=>'权限资源列表','act'=>'right_list','op'=>'System'),
-						array('name' => '登录日志', 'act'=>'log', 'op'=>'Admin'),
+						// array('name' => '登录日志', 'act'=>'log', 'op'=>'Admin'),
 						// array('name' => '供应商列表', 'act'=>'supplier', 'op'=>'Admin'),
 				)),
 			
-				// array('name' => '模板','child'=>array(
-				// 		array('name' => '模板设置', 'act'=>'templateList', 'op'=>'Template'),
-				// )),
-				array('name' => '数据','child'=>array(
-						array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
-						array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
-						//array('name' => '数据恢复', 'act'=>'log', 'op'=>'Admin'),
-						//array('name' => 'SQL查询', 'act'=>'log', 'op'=>'Admin'),
-				)),
 				array('name' => '商品','child' => array(
 					array('name' => '商品分类', 'act'=>'categoryList', 'op'=>'Goods'),
 					array('name' => '商品列表', 'act'=>'goodsList', 'op'=>'Goods'),
@@ -73,31 +97,15 @@ return	array(
 					array('name' => '添加订单', 'act'=>'add_order', 'op'=>'Order'),
 			        array('name' => '订单日志','act'=>'order_log','op'=>'Order'),
 			)),
-			// array('name' => '促销','child' => array(
-			// 		array('name' => '抢购管理', 'act'=>'flash_sale', 'op'=>'Promotion'),
-			// 		array('name' => '团购管理', 'act'=>'group_buy_list', 'op'=>'Promotion'),
-			// 		array('name' => '优惠促销', 'act'=>'prom_goods_list', 'op'=>'Promotion'),
-			// 		array('name' => '订单促销', 'act'=>'prom_order_list', 'op'=>'Promotion'),
-			// 		array('name' => '优惠券','act'=>'index', 'op'=>'Coupon'),
-			// 		array('name' => '预售管理','act'=>'pre_sell_list', 'op'=>'Promotion'),
-			// )),
 			
 			array('name' => '分销','child' => array(
-					array('name' => '分销商品列表', 'act'=>'goods_list', 'op'=>'Distribut'),
-					array('name' => '分销商列表', 'act'=>'distributor_list', 'op'=>'Distribut'),
+					// array('name' => '分销商品列表', 'act'=>'goods_list', 'op'=>'Distribut'),
+					// array('name' => '分销商列表', 'act'=>'distributor_list', 'op'=>'Distribut'),
 					array('name' => '分销关系', 'act'=>'tree', 'op'=>'Distribut'),
 					array('name' => '分销设置', 'act'=>'set', 'op'=>'Distribut'),
 					array('name' => '分成日志', 'act'=>'rebate_log', 'op'=>'Distribut'),
 			)),
-	     
-    	    // array('name' => '微信','child' => array(
-    	    //     array('name' => '公众号配置', 'act'=>'index', 'op'=>'Wechat'),
-    	    //     array('name' => '微信菜单管理', 'act'=>'menu', 'op'=>'Wechat'),
-    	    //     array('name' => '文本回复', 'act'=>'text', 'op'=>'Wechat'),
-    	    //     //array('name' => '图文回复', 'act'=>'img', 'op'=>'Wechat'),
-    	    // )),
-
-			
+	    
 			array('name' => '统计','child' => array(
 					array('name' => '销售概况', 'act'=>'index', 'op'=>'Report'),
 					array('name' => '销售排行', 'act'=>'saleTop', 'op'=>'Report'),
@@ -108,14 +116,14 @@ return	array(
 			)),
 			array('name' => '支付管理','child' => array(
 				array('name' => '支付管理', 'act'=>'index', 'op'=>'Plugin'),
-				//array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
-				//array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
 			)),
-   //          array('name' => 'App','child' => array(
-			// 	array('name' => '系统更新', 'act'=>'index', 'op'=>'MobileApp'),
-			// ))
+			array('name' => '数据','child'=>array(
+						array('name' => '数据备份', 'act'=>'index', 'op'=>'Tools'),
+						array('name' => '数据还原', 'act'=>'restore', 'op'=>'Tools'),
+			)),
+
+
 	)),
-		
 	// 'shop'=>array('name'=>'商城','child'=>array(
 
 	// )),

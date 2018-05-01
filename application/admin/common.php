@@ -19,7 +19,7 @@
  */
 function adminLog($log_info){
     $add['log_time'] = time();
-    $add['admin_id'] = session('admin_id');
+    $add['user_id'] = session('user_id');
     $add['log_info'] = $log_info;
     $add['log_ip'] = request()->ip();
     $add['log_url'] = request()->baseUrl() ;
@@ -27,8 +27,8 @@ function adminLog($log_info){
 }
 
 
-function getAdminInfo($admin_id){
-	return D('admin')->where("admin_id", $admin_id)->find();
+function getAdminInfo($user_id){
+	return D('admin')->where("user_id", $user_id)->find();
 }
 
 function tpversion()
@@ -243,7 +243,9 @@ function getMenuArr(){
 		foreach($menuArr as $k=>$val){
 			foreach ($val['child'] as $j=>$v){
 				foreach ($v['child'] as $s=>$son){
-					if(strpos($role_right,$son['op'].'@'.$son['act']) === false){
+					if(strpos($role_right,$son['op'].'@'.$son['act']) === false
+						 && 'Index@welcome' != $son['op'].'@'.$son['act']
+						){
 						unset($menuArr[$k]['child'][$j]['child'][$s]);//过滤菜单
 					}
 				}

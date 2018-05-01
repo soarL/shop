@@ -99,7 +99,7 @@ class OrderLogic extends Model
     public function orderActionLog($order_id,$action,$note=''){    	
         $order = M('order')->where(array('order_id'=>$order_id))->find();
         $data['order_id'] = $order_id;
-        $data['action_user'] = session('admin_id');
+        $data['action_user'] = session('user_id');
         $data['action_note'] = $note;
         $data['order_status'] = $order['order_status'];
         $data['pay_status'] = $order['pay_status'];
@@ -262,7 +262,7 @@ class OrderLogic extends Model
 		$data['delivery_sn'] = $this->get_delivery_sn();
 		$data['zipcode'] = $order['zipcode'];
 		$data['user_id'] = $order['user_id'];
-		$data['admin_id'] = session('admin_id');
+		$data['user_id'] = session('user_id');
 		$data['consignee'] = $order['consignee'];
 		$data['mobile'] = $order['mobile'];
 		$data['country'] = $order['country'];
@@ -300,7 +300,7 @@ class OrderLogic extends Model
 		$res = checkEnableSendSms("5");
 		if($res && $res['status'] ==1){
 		    $user_id = $data['user_id'];
-		    $users = M('users')->where('user_id', $user_id)->getField('user_id , nickname , mobile' , true);
+		    $users = M('admin')->where('user_id', $user_id)->getField('user_id , nickname , mobile' , true);
 		    if($users){
 		        $nickname = $users[$user_id]['nickname'];
 		        $sender = $users[$user_id]['mobile'];
